@@ -1,0 +1,51 @@
+---
+const sections = [
+  { id: 'Profile', name: 'Perfil' },
+  { id: 'programmingLenguages', name: 'Lenguajes' },
+  { id: 'frontend', name: 'Frontend' },
+  { id: 'backend', name: 'Backend' },
+  { id: 'dataBases', name: 'Bases de Datos' },
+  { id: 'tools', name: 'Herramientas y Extras' },
+];
+---
+
+<nav 
+  class="-translate-y-1/2 gap-5 z-50 flex flex-col left-5 top-1/2 fixed items-center justify-center py-1"
+  x-data="{ activeSection: 'Profile' }"
+  x-init="
+    requestAnimationFrame(() => {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            activeSection = entry.target.id;
+          }
+        });
+      }, {
+        threshold: 0.25,
+        rootMargin: '0px 0px -25% 0px'
+      });
+
+      document.querySelectorAll('section[id]').forEach(section => {
+        observer.observe(section);
+      });
+    }, 300);
+  "
+>
+  <div class="bg-gray-400 z-0 w-full px-2.5 absolute h-full rounded-2xl"></div>
+
+  {sections.map((section) => (
+    <a 
+      href={`#${section.id}`} 
+      class="size-4 bg-black cursor-pointer, transition-all duration-75 ease rounded-full relative group"
+      :class="{ 'animate-pulse scale-150 ring-2 ring-blue-200': activeSection === $el.dataset.id }"
+      @click="activeSection = $el.dataset.id"
+      data-id={section.id}
+      data-name={section.name}
+    >
+      <span 
+        class="absolute left-5 top-1/2 -translate-y-1/2 whitespace-nowrap bg-black/70 text-white px-2 py-0.5 rounded text-xs opacity-0
+               transition-opacity duration-300 ease-in group-hover:opacity-100"
+      >{section.name}</span>
+    </a>
+  ))}
+</nav>

@@ -2,15 +2,14 @@
 import placeholderImage from '../assets/placeholderImage.jpg';
 import "../styles/global.css";
 import { getCollection, render } from 'astro:content';
-import HeroSpacing from './HeroSpacing.astro';
 
 const presentation = await getCollection('presentation');
 const entry = presentation[0];
 const { Content } = await render(entry);
 ---
 
-<div class="h-screen w-full flex items-center justify-center ">
-  <section class="scroll-fade sticky top-20 max-w-3xl flex flex-col sm:flex-row items-center gap-8 border-3 p-4 rounded-2xl border-black bg-slate-900 shadow-slate-900 shadow-lg/80">
+<section id="Profile" class="h-screen w-full flex items-center justify-center ">
+  <div  class="scroll-fade sticky top-20 max-w-3xl flex flex-col sm:flex-row items-center gap-8 border-3 p-4 rounded-2xl border-black bg-slate-900 shadow-slate-900 shadow-lg/80">
     <div class="flex-shrink-0">
       <img src={placeholderImage.src} alt="Foto de perfil" class="size-48 object-cover rounded-full border-2" />
     </div>
@@ -18,6 +17,6 @@ const { Content } = await render(entry);
       <h1 class="text-3xl font-bold mb-4">{entry.data.title}</h1>
       {entry && <Content/>}
     </div>
-  </section>
-</div>
-<HeroSpacing/>
+  </div>
+</section>
+<div class="h-[50vh]"></div> 
