@@ -1,0 +1,29 @@
+---
+import placeholderImage from '../assets/yo.jpg';
+import "../styles/global.css";
+import { getCollection, render } from 'astro:content';
+
+const presentation = await getCollection('presentation');
+const entry = presentation[0];
+const { Content } = await render(entry);
+---
+
+<section id="presentation" class="min-h-screen w-full flex items-center justify-center flex-col cursor-default py-2">
+  <div class="scroll-fade sticky flex gap-8 flex-col items-center justify-center">
+    <div  class="top-20 max-w-3xl flex flex-col sm:flex-row items-center gap-8 border-3 p-4 rounded-2xl border-black bg-slate-900 shadow-slate-900 shadow-lg/80">
+      <div class="flex-shrink-0">
+        <img src={placeholderImage.src} alt="Foto de perfil" class="size-48 object-cover rounded-full border-2" />
+      </div>
+      <div class="text-center sm:text-left text-white">
+        <h1 class="text-3xl font-bold mb-4">{entry.data.title}</h1>
+        {entry && <Content/>}
+      </div>
+    </div>
+    <a href="/public/CV-Facundo-Cabrera-Julio-2025.pdf" download>
+      <button class="bg-slate-800 p-2 rounded-lg shadow-slate-900 shadow-lg/70 hover:-translate-y-1 hover:scale-125 transition-all active:bg-slate-900 hover:brightness-125 cursor-pointer">
+        Descargar CV
+      </button>
+    </a>
+  </div>
+</section>
+<div class="h-[40vh]"></div> 

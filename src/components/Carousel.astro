@@ -1,0 +1,84 @@
+---
+import HeroSection from "./HeroSection.astro";
+const { title, id, end, collectionName } = Astro.props;
+import placeholderImage from "../assets/placeholderImage.jpg";
+import { Icon } from "astro-icon/components";
+import { getCollection } from "astro:content";
+type EntryData = {
+  alt: string;
+  src: string;
+  link: string;
+  status: boolean;
+};
+const collection = (await getCollection(collectionName)) as {
+  data: EntryData;
+}[];
+---
+
+<HeroSection id={id} title={title} end={end}>
+  <div
+    id="default-carousel"
+    class="relative w-3xl bg-slate-900 p-2 rounded-2xl"
+    data-carousel="slide"
+  >
+    <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+      {
+        collection.map((entry) => {
+          const {src, alt, link, status} = entry.data
+          return (<div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <img
+              src={src}
+              class="rounded-2xl object-cover"
+              alt=""
+            />
+            <div class="text-center w-full -translate-y-8 h-fit bg-gradient-to-b from-slate-500/55 to-slate-500">
+              <p class="py-1 text-purple-800 font-bold text-xl underline hover:text-purple-950 transition duration-75">
+
+                <a href={link} target="_blank" rel="noopener noreferrer">{alt}</a>
+              </p>
+            </div>
+          </div>)
+        })
+      }
+
+
+    </div>
+
+    <div class="flex justify-between w-full items-center pt-2 px-10">
+      <button
+        type="button"
+        class="size-8 rounded-full cursor-pointer bg-slate-500 flex items-center justify-center hover:bg-slate-600 transition duration-125"
+        data-carousel-prev
+      >
+        <span class="inline-flex items-center justify-center">
+          <Icon name="ri:arrow-left-line" />
+        </span>
+      </button>
+
+      <div
+        class="place-self-center p-2 bg-slate-500 rounded-3xl cursor-default"
+      >
+      {collection.map((entry, i) => {
+          <button
+          type="button"
+          class="w-3 h-3 rounded -full"
+          aria-current="true"
+          data-carousel-slide-to={i}></button>
+      })}
+      </div>
+
+      <button
+        type="button"
+        class="size-8 rounded-full cursor-pointer bg-slate-500 flex items-center justify-center hover:bg-slate-600 transition duration-125"
+        data-carousel-next
+      >
+        <span class="inline-flex items-center justify-center">
+          <Icon name="ri:arrow-right-line" />
+        </span>
+      </button>
+    </div>
+  </div>
+  <!-- Slider indicators
+
+     -->
+</HeroSection>

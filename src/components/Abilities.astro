@@ -1,0 +1,14 @@
+---
+import HeroSection from "./HeroSection.astro";
+import HeroGrid from "./HeroGrid.astro";
+const { collections, id } = Astro.props;
+---
+
+<HeroSection id={id}>
+  {collections.map((collection: { collectionName: string; title: string }) => (
+    <HeroGrid
+      collectionName={collection.collectionName}
+      title={collection.title}
+    />
+  ))}
+</HeroSection>

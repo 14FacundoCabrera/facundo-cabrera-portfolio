@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@import "flowbite/src/themes/default";
+@plugin "flowbite/plugin";
+@source "../../node_modules/flowbite";
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+@keyframes fadeOut {
+  50% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+}
+
+.scroll-fade {
+  animation: fadeOut linear;
+  animation-timeline: view();
+  animation-range: entry 50% exit 100%;
+}
+
+

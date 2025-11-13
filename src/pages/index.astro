@@ -1,0 +1,27 @@
+---
+import ProfilePresentation from '../components/ProfilePresentation.astro';
+import Nav from '../components/Nav.astro';
+import Layout from '../layouts/Layout.astro';
+import Abilities from '../components/Abilities.astro';
+import Carousel from '../components/Carousel.astro';
+
+
+const collections = [
+	{collectionName: 'programmingLenguages', title:"Lenguajes de Programación"},
+	{collectionName:'frontend', title:"Frontend y Diseño"},
+	{collectionName:'backend', title:"Backend"},
+	{collectionName:'tools', title:"Herramientas y Extras"},
+	{collectionName:'softSkills', title:"Habilidades Extra"},
+]
+
+// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
+// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+---
+
+<Layout>
+	<ProfilePresentation/>
+	<Abilities  collections={collections} id="abilities"/>
+	<Carousel collectionName="projects" title="Proyectos" id="projects" end={true}/>
+	<Nav/>
+</Layout>
+
