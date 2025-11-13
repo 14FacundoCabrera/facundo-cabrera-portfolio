@@ -1,6 +1,6 @@
 ---
   alt: DubraWeb
-  src: ../assets/dubraWeb.webp
+  src: /dubraWeb.webp
   link: https://dubra.com.uy
   status: false
 ---
