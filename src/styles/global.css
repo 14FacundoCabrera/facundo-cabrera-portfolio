@@ -21,7 +21,7 @@ body {
 .scroll-fade {
   animation: fadeOut linear;
   animation-timeline: view();
-  animation-range: entry 50% exit 100%;
+  animation-range: entry 75% exit 100%;
 }
 
 
