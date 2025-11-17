@@ -2,29 +2,43 @@
 import HeroSection from "./HeroSection.astro";
 const { title, id, end, collectionName } = Astro.props;
 import { Icon } from "astro-icon/components";
-import { getCollection } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
+import HeroCard from "./HeroCard.astro";
 type EntryData = {
   alt: string;
   src: string;
   link: string;
   status: boolean;
+  frontend: string[];
+  backend: string[];
+  programmingLanguages: string[];
 };
 const collection = (await getCollection(collectionName)) as {
   data: EntryData;
 }[];
+const Entries = await Promise.all(
+  collection.flatMap(entry => {
+    console.log(entry)
+    const langs = entry.data.programmingLanguages.map(s => getEntry("programmingLanguages", s));
+    const front = entry.data.frontend.map(s => getEntry("frontend", s));
+    const back = entry.data.backend.map(s => getEntry("backend", s));
+
+    return [...langs, ...front, ...back];
+  })
+);
 ---
 
 <HeroSection id={id} title={title} end={end}>
   <div
     id="default-carousel"
-    class="relative w-3xl bg-slate-900 p-2 rounded-2xl"
+    class="relative w-3xl bg-slate-900 p-2 rounded-2xl min-h-96"
     data-carousel="slide"
   >
-    <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+    <div class=" overflow-hidden rounded-lg min-h-96 ">
       {
         collection.map((entry) => {
-          const {src, alt, link, status} = entry.data
-          return (<div class="hidden duration-700 ease-in-out" data-carousel-item>
+          const {src, alt, link, status, frontend, backend, programmingLanguages} = entry.data
+          return (<div class="hidden duration-700 ease-in-out p-2" data-carousel-item>
             <img
               src={src}
               class="rounded-2xl object-cover"
@@ -35,11 +49,20 @@ const collection = (await getCollection(collectionName)) as {
 
                 <a href={link} target="_blank" rel="noopener noreferrer">{alt}</a>
               </p>
+              
+            </div>
+
+            <div class=" flex flex-wrap gap-3 items-center justify-center p-4 mt-2 bg-slate-900 rounded-b-2xl max-w-xl place-self-center">
+              {Entries?.map(i => (
+                i && <HeroCard title={i?.data.title} icon={i?.data.icon} learned={i?.data.learned}/>
+                )
+              )}
+              
             </div>
           </div>)
         })
       }
-
+      
 
     </div>
 

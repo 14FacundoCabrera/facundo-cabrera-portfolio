@@ -7,7 +7,7 @@ const presentation = defineCollection({
     })
 })
 
-const programmingLenguages = defineCollection({
+const programmingLanguages = defineCollection({
     type: 'content',
     schema: z.object({
         title: z.string(),
@@ -77,16 +77,20 @@ const projects = defineCollection({
             src: z.string(),
             link: z.string(),
             status: z.boolean(),
+            frontend: z.array(z.string()),
+            backend: z.array(z.string()),
+            programmingLanguages: z.array(z.string()),
     })
 })
 
 export const collections = {
-    presentation: presentation,
-    programmingLenguages: programmingLenguages,
-    frontend: frontend,
-    backend: backend,
-    dataBases: dataBases,
-    tools: tools,
-    softSkills: softSkills,
-    links: links,
-}
+    presentation,
+    programmingLanguages,
+    frontend,
+    backend,
+    dataBases,
+    tools,
+    softSkills,
+    links,
+    projects,
+};
