@@ -17,27 +17,42 @@ const collection = (await getCollection(collectionName)) as {
   data: EntryData;
 }[];
 const Entries = await Promise.all(
-  collection.flatMap(entry => {
-    console.log(entry)
-    const langs = entry.data.programmingLanguages.map(s => getEntry("programmingLanguages", s));
-    const front = entry.data.frontend.map(s => getEntry("frontend", s));
-    const back = entry.data.backend.map(s => getEntry("backend", s));
+  collection.map(async (entry) => {
+    const langs = await Promise.all(
+      entry.data.programmingLanguages.map(s =>
+        getEntry("programmingLanguages", s)
+      )
+    );
+
+    const front = await Promise.all(
+      entry.data.frontend.map(s =>
+        getEntry("frontend", s)
+      )
+    );
+
+    const back = await Promise.all(
+      entry.data.backend.map(s =>
+        getEntry("backend", s)
+      )
+    );
 
     return [...langs, ...front, ...back];
   })
 );
+
+console.log('hey', Entries)
 ---
 
 <HeroSection id={id} title={title} end={end}>
   <div
     id="default-carousel"
-    class="relative w-3xl bg-slate-900 p-2 rounded-2xl min-h-96"
+    class="relative w-3xl bg-slate-900 p-2 rounded-2xl"
     data-carousel="slide"
   >
-    <div class=" overflow-hidden rounded-lg min-h-96 ">
+    <div class=" overflow-x-hidden rounded-lg min-h-174 relative">
       {
-        collection.map((entry) => {
-          const {src, alt, link, status, frontend, backend, programmingLanguages} = entry.data
+        collection.map((entry, index) => {
+          const {src, alt, link} = entry.data
           return (<div class="hidden duration-700 ease-in-out p-2" data-carousel-item>
             <img
               src={src}
@@ -52,8 +67,8 @@ const Entries = await Promise.all(
               
             </div>
 
-            <div class=" flex flex-wrap gap-3 items-center justify-center p-4 mt-2 bg-slate-900 rounded-b-2xl max-w-xl place-self-center">
-              {Entries?.map(i => (
+            <div class="flex flex-wrap gap-3 items-center justify-center p-4 mt-2 bg-slate-900 rounded-b-2xl max-w-xl place-self-center">
+              {Entries[index]?.map(i => (
                 i && <HeroCard title={i?.data.title} icon={i?.data.icon} learned={i?.data.learned}/>
                 )
               )}

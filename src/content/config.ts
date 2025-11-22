@@ -83,6 +83,15 @@ const projects = defineCollection({
     })
 })
 
+const socialMedia = defineCollection({
+    type: 'content',
+    schema: z.object({
+        title: z.string(),
+        link: z.string(),
+        icon: z.string(),
+    })
+})
+
 export const collections = {
     presentation,
     programmingLanguages,
@@ -93,4 +102,5 @@ export const collections = {
     softSkills,
     links,
     projects,
+    socialMedia,
 };

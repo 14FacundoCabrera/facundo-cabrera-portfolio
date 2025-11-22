@@ -2,10 +2,13 @@
 import placeholderImage from '../assets/yo.jpg';
 import "../styles/global.css";
 import { getCollection, render } from 'astro:content';
+import IconLink from './IconLink.astro';
 
 const presentation = await getCollection('presentation');
+const socialMedia = await getCollection('socialMedia');
 const entry = presentation[0];
 const { Content } = await render(entry);
+
 ---
 
 <section id="presentation" class="min-h-screen w-full flex items-center justify-center flex-col cursor-default py-2">
@@ -19,11 +22,16 @@ const { Content } = await render(entry);
         {entry && <Content/>}
       </div>
     </div>
-    <a href="/CV-Facundo-Cabrera-Octubre-2025.pdf" download>
+    <a href="/CV-Facundo-Cabrera-Noviembre-2025.pdf" download>
       <button class="bg-slate-800 p-2 rounded-lg shadow-slate-900 shadow-lg/70 hover:-translate-y-1 hover:scale-125 transition-all active:bg-slate-900 hover:brightness-125 cursor-pointer">
         Descargar CV
       </button>
     </a>
+  </div>
+  <div class="flex gap-5 py-5">
+    {socialMedia.map((social: {data :{icon:string; title:string; link:string;}}) => (
+      <IconLink title={social.data.title} icon={social.data.icon} link={social.data.link}/>
+    ))}
   </div>
 </section>
 <div class="h-[40vh]"></div> 

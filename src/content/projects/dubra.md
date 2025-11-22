@@ -6,6 +6,7 @@
   frontend:
   - react
   - tailwind
+  - css
   backend:
   - jwt
   - mysql
