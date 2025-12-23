@@ -77,9 +77,10 @@ const projects = defineCollection({
             src: z.string(),
             link: z.string(),
             status: z.boolean(),
-            frontend: z.array(z.string()),
-            backend: z.array(z.string()),
-            programmingLanguages: z.array(z.string()),
+            frontend: z.array(z.string()).optional(),
+            backend: z.array(z.string()).optional(),
+            programmingLanguages: z.array(z.string()).optional(),
+            tools: z.array(z.string()).optional(),
     })
 })
 

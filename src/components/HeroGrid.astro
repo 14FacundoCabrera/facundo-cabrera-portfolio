@@ -1,6 +1,6 @@
 ---
 import { getCollection } from "astro:content";
-import HeroCard from "./HeroCard.astro";
+import HeroCard from "./HeroCard";
 const { collectionName, title } = Astro.props
 type EntryData = {
   title: string;
@@ -23,7 +23,7 @@ const collection = await getCollection(collectionName) as {data : EntryData}[];
       const { title, learned, icon } = entry.data;
       return (
         <div>
-          <HeroCard title={title} learned={learned} icon={icon} />
+          <HeroCard title={title} learned={learned} icon={icon} client:load/>
         </div>
       );
     })}

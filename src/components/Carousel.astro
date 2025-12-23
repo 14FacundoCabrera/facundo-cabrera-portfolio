@@ -3,7 +3,7 @@ import HeroSection from "./HeroSection.astro";
 const { title, id, end, collectionName } = Astro.props;
 import { Icon } from "astro-icon/components";
 import { getCollection, getEntry } from "astro:content";
-import HeroCard from "./HeroCard.astro";
+import PopUp from "./PopUp.jsx";
 type EntryData = {
   alt: string;
   src: string;
@@ -11,6 +11,7 @@ type EntryData = {
   status: boolean;
   frontend: string[];
   backend: string[];
+  tools: string [];
   programmingLanguages: string[];
 };
 const collection = (await getCollection(collectionName)) as {
@@ -19,28 +20,34 @@ const collection = (await getCollection(collectionName)) as {
 const Entries = await Promise.all(
   collection.map(async (entry) => {
     const langs = await Promise.all(
-      entry.data.programmingLanguages.map(s =>
+      (entry.data.programmingLanguages ?? []).map(s =>
         getEntry("programmingLanguages", s)
       )
     );
 
     const front = await Promise.all(
-      entry.data.frontend.map(s =>
+      (entry.data.frontend ?? []).map(s =>
         getEntry("frontend", s)
       )
     );
 
     const back = await Promise.all(
-      entry.data.backend.map(s =>
+      (entry.data.backend ?? []).map(s =>
         getEntry("backend", s)
       )
     );
 
-    return [...langs, ...front, ...back];
+    const tools = await Promise.all(
+      (entry.data.tools ?? []).map(s =>
+        getEntry("tools", s)
+      )
+    );
+
+    return [...langs, ...front, ...back, ...tools];
   })
 );
 
-console.log('hey', Entries)
+console.log(collection)
 ---
 
 <HeroSection id={id} title={title} end={end}>
@@ -49,7 +56,7 @@ console.log('hey', Entries)
     class="relative w-3xl bg-slate-900 p-2 rounded-2xl"
     data-carousel="slide"
   >
-    <div class=" overflow-x-hidden rounded-lg min-h-174 relative">
+    <div class="overflow-hidden rounded-lg h-114 relative">
       {
         collection.map((entry, index) => {
           const {src, alt, link} = entry.data
@@ -59,21 +66,16 @@ console.log('hey', Entries)
               class="rounded-2xl object-cover"
               alt=""
             />
-            <div class="text-center w-full -translate-y-8 h-fit bg-gradient-to-b from-slate-500/55 to-slate-500">
+            <div class="text-center w-full -translate-y-8 absolute h-fit bg-gradient-to-b from-slate-500/55 to-slate-500">
               <p class="py-1 text-purple-800 font-bold text-xl underline hover:text-purple-950 transition duration-75">
 
                 <a href={link} target="_blank" rel="noopener noreferrer">{alt}</a>
               </p>
-              
             </div>
-
-            <div class="flex flex-wrap gap-3 items-center justify-center p-4 mt-2 bg-slate-900 rounded-b-2xl max-w-xl place-self-center">
-              {Entries[index]?.map(i => (
-                i && <HeroCard title={i?.data.title} icon={i?.data.icon} learned={i?.data.learned}/>
-                )
-              )}
-              
+            <div class="flex justify-center my-6">
+              <PopUp Entries={Entries[index]} client:load />
             </div>
+            
           </div>)
         })
       }
@@ -81,7 +83,8 @@ console.log('hey', Entries)
 
     </div>
 
-    <div class="flex justify-between w-full items-center pt-2 px-10">
+    <!-- Selector -->
+    <div class="relative flex justify-between w-full items-center pt-2 px-10">
       <button
         type="button"
         class="size-8 rounded-full cursor-pointer bg-slate-500 flex items-center justify-center hover:bg-slate-600 transition duration-125"
@@ -115,7 +118,6 @@ console.log('hey', Entries)
       </button>
     </div>
   </div>
-  <!-- Slider indicators
-
-     -->
 </HeroSection>
+
+

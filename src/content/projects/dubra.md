@@ -2,7 +2,7 @@
   alt: DubraWeb
   src: /dubraWeb.webp
   link: https://dubra.com.uy
-  status: false
+  status: true
   frontend:
   - react
   - tailwind
@@ -12,6 +12,7 @@
   - mysql
   - prisma
   - nodejs
+  - express
   programmingLanguages:
   - javascript
 ---
